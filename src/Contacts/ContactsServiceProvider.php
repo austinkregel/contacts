@@ -21,6 +21,27 @@ class ContactsServiceProvider extends ServiceProvider {
 		//
 	}
 
+
+	/**
+	 *
+	 */
+	public function boot(){
+		if (!$this->app->routesAreCached()) {
+			$this->app->router->group(['namespace' => 'Kregel\Contracts\Http\Controllers'], function ($router) {
+				require __DIR__.'/Http/routes.php';
+			});
+		}
+
+		$this->loadViewsFrom(__DIR__.'/../resources/views', 'contacts');
+		$this->publishes([
+			__DIR__.'/../resources/views' => base_path('resources/views/vendor/contacts'),
+		], 'views');
+		$this->publishes([
+			__DIR__.'/../config/config.php' => config_path('kregel/contacts.php'),
+		], 'config');
+
+	}
+
 	/**
 	 * Get the services provided by the provider.
 	 *
