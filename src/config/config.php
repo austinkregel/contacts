@@ -1,5 +1,6 @@
 <?php
 return [
-    'route' => 'contacts',
-    'base-layout' => '',
+    'vendor' => [
+        'model' => Kregel\Contacts\Models\Contact::class,
+    ],
 ];

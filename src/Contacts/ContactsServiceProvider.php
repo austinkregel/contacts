@@ -1,55 +1,48 @@
 <?php namespace Kregel\Contacts;
 
 use Illuminate\Support\ServiceProvider;
+use Kregel\Warden\WardenServiceProvider;
 
-class ContactsServiceProvider extends ServiceProvider {
+class ContactsServiceProvider extends ServiceProvider
+{
 
-	/**
-	 * Indicates if loading of the provider is deferred.
-	 *
-	 * @var bool
-	 */
-	protected $defer = false;
-
-	/**
-	 * Register the service provider.
-	 *
-	 * @return void
-	 */
-	public function register()
-	{
-		//
-	}
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
 
-	/**
-	 *
-	 */
-	public function boot(){
-		if (!$this->app->routesAreCached()) {
-			$this->app->router->group(['namespace' => 'Kregel\Contracts\Http\Controllers'], function ($router) {
-				require __DIR__.'/Http/routes.php';
-			});
-		}
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->register(WardenServiceProvider::class);
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'kregel.warden.models');
+    }
 
-		$this->loadViewsFrom(__DIR__.'/../resources/views', 'contacts');
-		$this->publishes([
-			__DIR__.'/../resources/views' => base_path('resources/views/vendor/contacts'),
-		], 'views');
-		$this->publishes([
-			__DIR__.'/../config/config.php' => config_path('kregel/contacts.php'),
-		], 'config');
 
-	}
+    /**
+     *
+     */
+    public function boot()
+    {
 
-	/**
-	 * Get the services provided by the provider.
-	 *
-	 * @return array
-	 */
-	public function provides()
-	{
-		return [];
-	}
+    }
+
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [ ];
+    }
 
 }
